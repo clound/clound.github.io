@@ -201,7 +201,7 @@
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2016-01-29T14:31:43+08:00" content="2016-01-29">
+            <time itemprop="dateCreated" datetime="2016-01-29T14:34:13+08:00" content="2016-01-29">
               2016-01-29
             </time>
           </span>
@@ -327,7 +327,8 @@
 </blockquote>
 <p>下面就来看看NX是如何工作的：</p>
 <p><img src="/images/NXwork_flowchart.jpg" alt="NXwork_flowchart_jpg"></p>
-<p>可以看到，X Server和X Client不直接通讯了，而是通过NxProxy进行通讯。用户端的X Server误以为NxProxy就是X Client，使用原生的X11于其通讯，而用户端的NxProxy接收到X11协议数据后，经过压缩，再通过NX协议与服务端的NxProxy通讯。在服务端，NxProxy内嵌于NxAgent中，NxAgent再将NX协议与X11进行转化，并且冒充X Server与X Client进行通讯，从而达到优化的目的。NxAgent是从XNest演变过来的，既充当X Server又冒充X Client。<br>上图还可以看到，用户端和服务端的NxProxy都对数据进行了缓存。这样，他们之前传输数据时，可以将不变的数据缓存起来，传输的只是差异数据。</p>
+<p>可以看到，X Server和X Client不直接通讯了，而是通过NxProxy进行通讯。用户端的X Server误以为NxProxy就是X Client，使用原生的X11于其通讯，而用户端的NxProxy接收到X11协议数据后，经过压缩，再通过NX协议与服务端的NxProxy通讯。在服务端，NxProxy内嵌于NxAgent中，NxAgent再将NX协议与X11进行转化，并且冒充X Server与X Client进行通讯，从而达到优化的目的。NxAgent是从XNest演变过来的，既充当X Server又冒充X Client。</p>
+<p>上图还可以看到，用户端和服务端的NxProxy都对数据进行了缓存。这样，他们之前传输数据时，可以将不变的数据缓存起来，传输的只是差异数据。</p>
 <p><img src="/images/NXwork_flowchart1.jpg" alt="NXwork_flowchart1_jpg"><br>当用户端的NxClient，比如OpenNX启动连接后，会通过客户端的一个NxSsh组件与服务端的NxServer建立连接(Connect)，确认连通之后，NxSsh会向NxServer发出Start Session命令，命令包含需要启动桌面还是哪个应用程序，分辨率是多少等等。服务端收到命令后，准备好Session所需环境，然后启动NxAgent，内置的NxProxy也同时启动起来，同时，需要服务端执行的应用程序也被NxServer执行起来。随后，NxServer生成一个Xauth Cookie（相当于访问令牌）并返回给NxSsh，NxSsh收到Xauth Cookie后，再启动NxProxy，并且通过Xauth Cookie与服务端的NxProxy取得了联系。 </p>
 <table>
 <thead>
